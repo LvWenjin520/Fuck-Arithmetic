@@ -1,5 +1,6 @@
 package graph;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
@@ -13,9 +14,6 @@ public class Graph {
 	
 	//节点数组
 	private char[] vertexs;
-	
-	//边的数量
-	private int lineNum;
 	
 	//图的邻接矩阵
 	private int[][] graph;
@@ -34,8 +32,6 @@ public class Graph {
 		int vertexsNum = vertexs.length;
 		
 		this.graph = new int[vertexsNum][vertexsNum];
-		
-		this.lineNum = lineNum;
 		
 	}
 	
@@ -154,5 +150,76 @@ public class Graph {
 			
 		}
 	}
+	
+	/**
+	 * 获取指定起始点及结束点的权重
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	private int getWeight(char start,char end) {
+		
+		int startPos = getpointPos(start);
+		int endPos = getpointPos(end);
+		if(graph[startPos][endPos] > 0) {
+			return graph[startPos][endPos];
+		}
+		return -1;
+	}
+	
+	
+	/**
+	 * prim算法，求最小生成树
+	 * @param starPoint
+	 * @return 生成树的总路径
+	 */
+	public int prim(char starPoint) {
+		
+		//生成树上的点
+		ArrayList<Character> tree = new ArrayList<>();
+		//图上未访问过的点
+		ArrayList<Character> graph = new ArrayList<>();
+		int startPointPos = getpointPos(starPoint);
+		
+		tree.add(starPoint);
+		for(int i = 0;i<vertexs.length;i++) {
+			if(i == startPointPos) {
+				continue;
+			}
+			graph.add(vertexs[i]);
+		}
+		
+		int minTreePath = 0;
+		
+		while(tree.size() < vertexs.length) {
+			int index = 0;
+			int minWeight = 99999;
+			for(int j = 0;j<tree.size();j++) {
+				for(int i = 0;i<graph.size();i++) {
+					int weight = getWeight(tree.get(j),graph.get(i));
+					if(weight > 0 && weight < minWeight) {
+						minWeight = weight;
+						index = i;
+					}
+				}
+			}
+			minTreePath += minWeight;
+			tree.add(graph.get(index));
+			graph.remove(index);
+		}
+		return minTreePath;
+	}
+	
+	
+	/**
+	 * 迪杰斯特拉算法
+	 */
+	public void dijkstra() {
+		
+	}
+	
+	
+	
+	
 	
 }
