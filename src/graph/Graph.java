@@ -1,5 +1,7 @@
 package graph;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 
 /**
@@ -120,4 +122,37 @@ public class Graph {
 			System.out.println(stac.pop());
 		}
 	}
+	
+	/**
+	 * 广度优先搜索
+	 * @param point
+	 */
+	public void graphBfs(char point) {
+		
+		Queue<Character> queue = new LinkedList<>();
+		
+		int pointPos = getpointPos(point);
+		
+		queue.offer(point);
+		
+		visited[pointPos] = 1;
+		
+		while(!queue.isEmpty()) {
+			
+			for(int i = 0;i<vertexs.length;i++) {
+				if(visited[i] == 0 && graph[pointPos][i] > 0) {
+					queue.offer(vertexs[i]);
+					visited[i] = 1;
+				}
+			}
+			
+			System.out.println(queue.poll());
+			if(queue.isEmpty()) {
+				continue;
+			}
+			pointPos = getpointPos(queue.peek());
+			
+		}
+	}
+	
 }
