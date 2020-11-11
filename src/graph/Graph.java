@@ -171,7 +171,7 @@ public class Graph {
 	/**
 	 * prim算法，求最小生成树
 	 * @param starPoint
-	 * @return 生成树的总路径
+	 * @return 生成树的总  路径
 	 */
 	public int prim(char starPoint) {
 		
