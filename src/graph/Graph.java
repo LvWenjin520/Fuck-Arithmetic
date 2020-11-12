@@ -60,7 +60,7 @@ public class Graph {
 	}
 
 	/**
-	 * 放置边
+	 * 放置边的方法
 	 * 
 	 * @param point1
 	 * @param point2
