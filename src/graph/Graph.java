@@ -2,6 +2,7 @@ package graph;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.Stack;
 
@@ -220,6 +221,47 @@ public class Graph {
 	 * 返回最短路径的值
 	 */
 	public int dijkstra(char point) {
+		
+		List<Character> list = new ArrayList<>();
+		
+		list.add(point);
+		
+		List<Character> graphPoint = new ArrayList<>();
+		
+		int pointIndex = getpointPos(point);
+		
+		for(int i = 0;i<vertexs.length;i++) {
+			if(i == pointIndex) {
+				continue;
+			}
+			graphPoint.add(vertexs[i]);
+		}
+		
+		int[] result = new int[vertexs.length];
+		
+		int max = 9999;
+		int min = 0;
+		int index = 0;
+		while(!(list.size() == vertexs.length)) {
+			
+			for(int j = 0;j<vertexs.length;j++) {
+				for(int i = 0;i<vertexs.length-1;i++) {
+					if(graph[pointIndex][i] == 0) {
+						max = 9999;
+					}
+					if(graph[pointIndex][i] > 0 && graph[pointIndex][i]+result[j] < max) {
+						min += graph[pointIndex][i];
+						max = min;
+						index = i;
+					}
+				}
+				result[j] = min;
+				list.add(vertexs[index]);
+				graphPoint.remove(index);
+			}
+			
+		}
+		
 		return -1;
 	}
 
