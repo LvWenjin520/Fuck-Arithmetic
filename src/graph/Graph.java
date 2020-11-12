@@ -181,7 +181,6 @@ public class Graph {
 	 */
 	public int prim(char starPoint) {
 
-		// 生成树上的点
 		ArrayList<Character> tree = new ArrayList<>();
 		// 图上未访问过的点
 		ArrayList<Character> graph = new ArrayList<>();
