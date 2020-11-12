@@ -6,7 +6,7 @@ import java.util.Queue;
 import java.util.Stack;
 
 /**
- * 图的基本操 作
+ * <<<<<<< HEAD 图的基本操 作
  * 
  * @author LvWenJin
  *
