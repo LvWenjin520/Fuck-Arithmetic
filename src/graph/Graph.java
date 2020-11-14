@@ -22,7 +22,7 @@ public class Graph {
 	private int[][] graph;
 
 	// 判断是否访问过
-	private int[] visited = new int[5];
+	private int[] visited;
 
 	//图的边数
 	public int lineNum;
@@ -37,7 +37,7 @@ public class Graph {
 	 */
 	public Graph(char[] vertexs) {
 		this.vertexs = vertexs;
-
+		visited = new int[vertexs.length];
 		int vertexsNum = vertexs.length;
 
 		this.graph = new int[vertexsNum][vertexsNum];
@@ -448,7 +448,6 @@ public class Graph {
 		//输出边的信息
 		@Override
 		public String toString() {
-			// TODO Auto-generated method stub
 			return this.start+"->"+this.end+"-"+weight;
 		}
 
@@ -463,6 +462,4 @@ public class Graph {
 			return 0;
 		}
 	}
-	
-	
 }
