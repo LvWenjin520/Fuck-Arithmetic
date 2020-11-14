@@ -217,7 +217,7 @@ public class Graph {
 
 	/**
 	 * 迪杰斯特拉算法
-	 * 返回最短路径的值
+	 * 返回最短路径的数组值
 	 */
 	public int[] dijkstra(char point) {
 		
@@ -229,55 +229,92 @@ public class Graph {
 		//最短路径结果
 		int[] result = new int[vertexs.length];
 		
+		//设置最大值未9999
 		int INF = 9999;
 		
 		for(int i = 0;i<vertexs.length;i++) {
-			//graphPoint.add(vertexs[i]);
 			if(graph[pointIndex][i] == 0) {
 				result[i] = INF;
-				continue;
+			}else {
+				result[i] = graph[pointIndex][i];
 			}
-			//初始化结果集
-			result[i] = graph[pointIndex][i];
-			
 		}
-
-		int k = 0;
 		
-		//总共循环n-1次
-		for(int i = 1 ; i < vertexs.length ; i++) {
+		//最小点的位置
+		int k = 0;
+		for(int i = 1;i<vertexs.length;i++) {
 			
-			//设置最小值
+			//找到剩余中的最小值
 			int min = INF;
-			
 			for(int j = 0;j<vertexs.length;j++) {
 				if(visited[j] == 0 && result[j] < min) {
-					//记录最小路径
 					min = result[j];
-					//记录最小路径的节点位置
 					k = j;
 				}
 			}
 			
+			//标记访问点
 			visited[k] = 1;
 			
+			//更改原数组中的距离值
 			for(int j = 0;j<vertexs.length;j++) {
 				int temp = 0;
-				
 				if(graph[k][j] == 0) {
 					temp = INF;
 				}else {
-					temp = min + graph[k][j];
+					temp = min+graph[k][j];
 				}
+				
 				if(visited[j] == 0 && temp < result[j]) {
 					result[j] = temp;
 				}
 			}
 		}
-		
 		result[pointIndex] = 0;
 		
 		return result;
 	}
-
+	
+	
+	/**
+	 * 	floyd算法
+	 * @param point 起始点
+	 * @return  最短路径结果集
+	 */
+	public int[][] floyd(char point) {
+		
+		int INF = 9999;
+		
+		//结果集
+		int[][] result = new int[vertexs.length][vertexs.length];
+		
+		//初始化距离矩阵
+		for(int i = 0 ; i<vertexs.length;i++) {
+			for(int j = 0 ;j<vertexs.length;j++) {
+				if(graph[i][j] == 0) {
+					result[i][j] = INF;
+				}else {
+					result[i][j] = graph[i][j];
+				}
+			}
+		}
+		
+		//插入点
+		for(int i = 0 ;i<vertexs.length;i++) {
+			
+			for(int j = 0;j<vertexs.length;j++) {
+				for(int k = 0;k<vertexs.length;k++) {
+					if(j == k) {
+						result[j][k] = 0;
+					}else {
+						int temp = result[k][i]+result[i][j];
+						if(temp < result[j][k]) {
+							result[j][k] = temp;
+						}
+					}
+				}
+			}
+		}
+		return result;
+	}
 }
