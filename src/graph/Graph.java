@@ -2,7 +2,6 @@ package graph;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 import java.util.Stack;
 
@@ -220,49 +219,65 @@ public class Graph {
 	 * 迪杰斯特拉算法
 	 * 返回最短路径的值
 	 */
-	public int dijkstra(char point) {
-		
-		List<Character> list = new ArrayList<>();
-		
-		list.add(point);
-		
-		List<Character> graphPoint = new ArrayList<>();
+	public int[] dijkstra(char point) {
 		
 		int pointIndex = getpointPos(point);
 		
-		for(int i = 0;i<vertexs.length;i++) {
-			if(i == pointIndex) {
-				continue;
-			}
-			graphPoint.add(vertexs[i]);
-		}
+		//标记已访问
+		visited[pointIndex] = 1;
 		
+		//最短路径结果
 		int[] result = new int[vertexs.length];
 		
-		int max = 9999;
-		int min = 0;
-		int index = 0;
-		while(!(list.size() == vertexs.length)) {
-			
-			for(int j = 0;j<vertexs.length;j++) {
-				for(int i = 0;i<vertexs.length-1;i++) {
-					if(graph[pointIndex][i] == 0) {
-						max = 9999;
-					}
-					if(graph[pointIndex][i] > 0 && graph[pointIndex][i]+result[j] < max) {
-						min += graph[pointIndex][i];
-						max = min;
-						index = i;
-					}
-				}
-				result[j] = min;
-				list.add(vertexs[index]);
-				graphPoint.remove(index);
+		int INF = 9999;
+		
+		for(int i = 0;i<vertexs.length;i++) {
+			//graphPoint.add(vertexs[i]);
+			if(graph[pointIndex][i] == 0) {
+				result[i] = INF;
+				continue;
 			}
+			//初始化结果集
+			result[i] = graph[pointIndex][i];
 			
 		}
+
+		int k = 0;
 		
-		return -1;
+		//总共循环n-1次
+		for(int i = 1 ; i < vertexs.length ; i++) {
+			
+			//设置最小值
+			int min = INF;
+			
+			for(int j = 0;j<vertexs.length;j++) {
+				if(visited[j] == 0 && result[j] < min) {
+					//记录最小路径
+					min = result[j];
+					//记录最小路径的节点位置
+					k = j;
+				}
+			}
+			
+			visited[k] = 1;
+			
+			for(int j = 0;j<vertexs.length;j++) {
+				int temp = 0;
+				
+				if(graph[k][j] == 0) {
+					temp = INF;
+				}else {
+					temp = min + graph[k][j];
+				}
+				if(visited[j] == 0 && temp < result[j]) {
+					result[j] = temp;
+				}
+			}
+		}
+		
+		result[pointIndex] = 0;
+		
+		return result;
 	}
 
 }
