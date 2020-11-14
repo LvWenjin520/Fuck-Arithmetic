@@ -1,7 +1,9 @@
 package graph;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.Stack;
 
@@ -22,13 +24,18 @@ public class Graph {
 	// 判断是否访问过
 	private int[] visited = new int[5];
 
+	//图的边数
+	public int lineNum;
+	
+	//边的集合
+	public List<Graph.Edge> linesList = new ArrayList<Graph.Edge>();
+	
 	/**
 	 * 初始化整个邻接表
 	 * 
 	 * @param vertexs 节点数 组
-	 * @param lineNum 边的数量
 	 */
-	public Graph(char[] vertexs, int lineNum) {
+	public Graph(char[] vertexs) {
 		this.vertexs = vertexs;
 
 		int vertexsNum = vertexs.length;
@@ -67,6 +74,12 @@ public class Graph {
 	 * @param weight
 	 */
 	public void insertLines(char point1, char point2, int weight) {
+		lineNum ++;
+		
+		//将边放入边的集合中
+		Graph.Edge edge = new Graph.Edge(point1, point2, weight);
+		linesList.add(edge);
+		
 		int point1Pos = getpointPos(point1);
 		int point2Pos = getpointPos(point2);
 		this.graph[point1Pos][point2Pos] = weight;
@@ -179,7 +192,7 @@ public class Graph {
 	 * @param starPoint
 	 * @return 生成树的总 路径
 	 */
-	public int prim(char starPoint) {
+	public int[][] prim(char starPoint) {
 
 		ArrayList<Character> tree = new ArrayList<>();
 		// 图上未访问过的点
@@ -196,8 +209,12 @@ public class Graph {
 
 		int minTreePath = 0;
 
+		//最小生成树
+		int[][] minTree = new int[vertexs.length][vertexs.length];
+		
 		while (tree.size() < vertexs.length) {
 			int index = 0;
+			int cal = 0;
 			int minWeight = 99999;
 			for (int j = 0; j < tree.size(); j++) {
 				for (int i = 0; i < graph.size(); i++) {
@@ -205,14 +222,25 @@ public class Graph {
 					if (weight > 0 && weight < minWeight) {
 						minWeight = weight;
 						index = i;
+						cal = j;
 					}
 				}
+				
+				
 			}
+			
+			//组装成最小生成树
+			int n = getpointPos(graph.get(index));
+			int m =getpointPos(tree.get(cal));
+			minTree[n][m] = minWeight;
+			minTree[m][n] = minWeight;
+			
 			minTreePath += minWeight;
 			tree.add(graph.get(index));
 			graph.remove(index);
 		}
-		return minTreePath;
+		System.out.println("最小生成树的总路径为："+minTreePath);
+		return minTree;
 	}
 
 	/**
@@ -277,7 +305,7 @@ public class Graph {
 	
 	
 	/**
-	 * 	floyd算法
+	 * 	floyd算法 (插点法)
 	 * @param point 起始点
 	 * @return  最短路径结果集
 	 */
@@ -317,4 +345,124 @@ public class Graph {
 		}
 		return result;
 	}
+	
+	
+	
+	
+	/***
+	 * 克鲁斯卡尔算法
+	 * @param point 起始点
+	 * @return 最小生成树矩阵
+	 */
+	public int[][] kruskal(char point){
+		//输出排完序的边集合
+		Collections.sort(linesList);
+		
+		/*
+		 * 先将边排序 System.out.println(linesList);
+		 */
+
+		
+		LinkedList<Graph.Edge> linesQueue = new LinkedList<Graph.Edge>(linesList);
+		
+		int[][] minTree = new int[vertexs.length][vertexs.length];
+		
+		//父节点的集合
+		int[] parent = new int[vertexs.length];
+		for(int i=0;i<vertexs.length;i++) {
+			parent[i] = i+1;
+		}
+		
+		int min = 0;
+		while(!linesQueue.isEmpty()) {
+			
+			Graph.Edge poll = linesQueue.poll();
+			
+			//一条边上的起点位置
+			int p1 = getpointPos(poll.getStart());
+			//一条边上的终点位置
+			int p2 = getpointPos(poll.getEnd());
+			
+			if(!isCacle(parent,p1,p2)) {
+				minTree[p1][p2] = poll.getWeight();
+				minTree[p2][p1] = poll.getWeight();
+				min+=poll.getWeight();
+			}
+		}
+		System.out.println("最小生成树的总长度为："+min);
+		return minTree;
+	}
+	
+	/**
+	 * 使用并查集判断是否形成环
+	 * @param parent:父节点集合 
+	 * @param pointIndex:点的位置
+	 * @return true：形成环了
+	 */
+	private boolean isCacle(int[] parent,int startIndex,int endIndex) {
+		
+		if(parent[startIndex] != parent[endIndex]) {
+			//这里就是并查集算法
+			int temp = parent[startIndex];
+			for(int i = 0;i<parent.length;i++) {
+				if(parent[i] == temp) {
+					parent[i] = parent[endIndex];
+				}
+			}
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * 	内部类，用于表示边并排序
+	 * @author LvWenJin
+	 *
+	 */
+	private class Edge implements Comparable<Graph.Edge>{
+		private char start;
+		private char end;
+		private int weight;
+		
+		public char getStart() {
+			return start;
+		}
+
+
+		public char getEnd() {
+			return end;
+		}
+
+
+		public int getWeight() {
+			return weight;
+		}
+
+
+		public Edge(char start,char end,int weight) {
+			this.start = start;
+			this.end = end;
+			this.weight = weight;
+		}
+		
+		//输出边的信息
+		@Override
+		public String toString() {
+			// TODO Auto-generated method stub
+			return this.start+"->"+this.end+"-"+weight;
+		}
+
+		//升序排序
+		@Override
+		public int compareTo(Graph.Edge o) {
+			if(this.weight < o.weight) {
+				return -1;
+			}else if(this.weight > o.weight) {
+				return 1;
+			}
+			return 0;
+		}
+	}
+	
+	
 }
