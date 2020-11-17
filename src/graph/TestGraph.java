@@ -1,13 +1,28 @@
 package graph;
 
-import java.util.List;
-
 public class TestGraph {
 	public static void main(String[] args) {
 		
-		char[] c = new char[]{'a','b','c','d','e','f','g'};
+		String[] c = new String[]{"v1","v2","v3","v4","v5","v6","v7","v8","v9"};
+		
+		AOEGraph g = new AOEGraph(c);
+		g.insertLines("v1", "v2", 6);
+		g.insertLines("v1", "v3", 4);
+		g.insertLines("v1", "v4", 5);
+		g.insertLines("v2", "v5", 1);
+		g.insertLines("v3", "v5", 1);
+		g.insertLines("v4", "v6", 2);
+		g.insertLines("v5", "v7", 9);
+		g.insertLines("v5", "v8", 7);
+		g.insertLines("v6", "v8", 4);
+		g.insertLines("v7", "v9", 2);
+		g.insertLines("v8", "v9", 4);
+		g.showGraph();
+		System.out.println(g.lineNum);
+		g.keyPath();
+		
 		//测试AOV图的拓扑排序
-		AOVGraph g = new AOVGraph(c);
+		/*AOVGraph g = new AOVGraph(c);
 		g.insertLines('a', 'b');
 		g.insertLines('c', 'b');
 		g.insertLines('b', 'd');
@@ -19,7 +34,7 @@ public class TestGraph {
 		g.insertLines('g', 'd');
 		g.showGraph();
 		List<Character> topoSort = g.topoSort();
-		System.out.println(topoSort);
+		System.out.println(topoSort);*/
 		//System.out.println(Arrays.toString(topoSort));
 		
 		//测试无向网的各种算法

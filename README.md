@@ -8,3 +8,11 @@
 ### 待学习的东西（备忘录）
 	hadhop
 	布隆过滤器
+	kafka
+	java的Stream
+	java高并发
+	消息队列
+	幂等性
+	springboot
+	数据库及优化
+	jvm
