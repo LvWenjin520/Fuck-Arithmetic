@@ -1,6 +1,7 @@
 package graph;
 
 import java.util.Arrays;
+import java.util.Stack;
 
 /**
  * AOE图的结构与算法 工程时间节点控制
@@ -72,20 +73,41 @@ public class AOEGraph {
 	 * 求节点最晚开始时间
 	 * @return
 	 */
-	private int[] getVl(int[][] graph,int[] ve,String startPoint) {
+	private int[] getVl(int[][] graph,int[] ve) {
 		
-		int[] vl = new int[ve.length];
+		int[] minPath = new int[vertexs.length];
 		
-		return vl;
+		minPath[vertexs.length-1] = ve[ve.length-1];
+		
+		Stack<String> stack = new Stack<>();
+		
+		for(int i = 0;i<vertexs.length-1;i++) {
+			stack.push(vertexs[i]);
+		}
+		
+		while(!stack.isEmpty()) {
+			int index = 0;
+			int min = 9999;
+			
+			int pointPos = getpointPos(stack.peek());
+			for(int i = 0;i<vertexs.length;i++) {
+				if(graph[i][pointPos]!=0 && ve[i]-graph[i][pointPos]<min) {
+					min = ve[i]-graph[i][pointPos];
+					index = pointPos;
+				}
+			}
+			minPath[index] = min;
+			stack.pop();
+		}
+		return minPath;
 	}
 	
 	/**
 	 * 求节点最早开始时间
 	 * @return
 	 */
-	private int[] getVe(int[][] graph,String startPoint) {
+	private int[] getVe(int[][] graph) {
 		
-		if(getpointPos(startPoint) == 0) {
 			// 事件节点的最早于最迟发生时间
 			int[] pointMax = new int[vertexs.length];
 			// 初始化
@@ -117,8 +139,6 @@ public class AOEGraph {
 				visited[i] = 0;
 			}
 			return pointMax;
-		}
-		return null;
 	}
 		
 	/**
@@ -145,12 +165,11 @@ public class AOEGraph {
 		
 
 		//求得节点的最早开始事件
-		int[] ve = getVe(graph,"v1");
+		int[] ve = getVe(graph);
 		//置转AOE图，用于求节点的最晚开始时间
 		int[][] newGraph = overTren();
-		
+		int[] vl = getVl(newGraph,ve);
 		System.err.println(Arrays.toString(ve));
-		int[] vl = getVl(newGraph,ve,"v9");
-		System.out.println(Arrays.toString(vl));
+		System.err.println(Arrays.toString(vl));
 	}
 }
