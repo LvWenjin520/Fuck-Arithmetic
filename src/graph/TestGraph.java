@@ -2,9 +2,9 @@ package graph;
 
 public class TestGraph {
 	public static void main(String[] args) {
-		
+		/*
+		 * 测试AOE关键路径算法的用例
 		String[] c = new String[]{"v1","v2","v3","v4","v5","v6","v7","v8","v9"};
-		
 		AOEGraph g = new AOEGraph(c);
 		g.insertLines("v1", "v2", 6);
 		g.insertLines("v1", "v3", 4);
@@ -18,7 +18,7 @@ public class TestGraph {
 		g.insertLines("v7", "v9", 2);
 		g.insertLines("v8", "v9", 4);
 		g.showGraph();
-		g.keyPath();
+		g.keyPath();*/
 		
 		//测试AOV图的拓扑排序
 		/*AOVGraph g = new AOVGraph(c);
@@ -57,6 +57,7 @@ public class TestGraph {
 		//g.garphDfsWithOutRec('c');
 		//g.graphBfs('b');
 		//System.out.println(g.prim('a'));
+		//迪杰斯特拉算法
 		//int[] dijkstra = g.dijkstra('c');
 		//System.out.println(Arrays.toString(dijkstra));
 		
