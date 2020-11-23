@@ -18,7 +18,6 @@ public class TestGraph {
 		g.insertLines("v7", "v9", 2);
 		g.insertLines("v8", "v9", 4);
 		g.showGraph();
-		System.out.println(g.lineNum);
 		g.keyPath();
 		
 		//测试AOV图的拓扑排序
