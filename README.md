@@ -13,6 +13,9 @@
 	
 ### 待学习的东西（备忘录）
 	redis
+	mongoDB 文档型数据库
+	FastDFS 分布式文件系统
+	solr 搜索引擎
 	hadhop
 	布隆过滤器
 	kafka
